@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import csv from 'csv-parser';
 
 // const pathName: string = path.join(__dirname, '../files', '2017.csv'); /* real data file */
 const pathName: string = path.join(__dirname, '../files', '20170101_test.csv'); /* test file */
@@ -16,24 +17,26 @@ interface RowData {
   mFlag: string;
   qFlag: string;
   sFlag: string;
-  obs: number;
+  observedTime: string;
 }
 
+let observations: RowData[] = [];
+
+let desiredId = "USW00024235";
+
 stream
-  .on('data', (chunk) => {
-    let rows = chunk.toString().split("\n");
-    for(let row of rows) {
-      let rowValues = row.split(",");
-      let id = rowValues[0];
-      let unformattedDate = rowValues[1];
+  .pipe(csv(["id", "date", "element", "data", "mFlag", "qFlag", "sFlag", "observedTime"]))
+  .on('data', (parsedData) => {
+    if(parsedData["id"] == desiredId) {
+      let unformattedDate = parsedData["date"];
       let date = new Date(`${unformattedDate.substring(0,4)}-${unformattedDate.substring(4,6)}-${unformattedDate.substring(6,8)}`);
-      let element = rowValues[2];
-      let data = parseInt(rowValues[3]);
-      let mFlag = rowValues[4];
-      let qFlag = rowValues[5];
-      let sFlag = rowValues[6];
-      let obs = parseInt(rowValues[7]);
-      const formattedRow: RowData = { id, date, element, data, mFlag, qFlag, sFlag, obs }
+      let data = parseInt(parsedData["data"]);
+      const formattedValue: RowData = { 
+        ...parsedData, 
+        date,
+        data,
+      }
+      observations.push(formattedValue)
     }
   })
-  .on('end', () => console.log('read complete'))
+  .on('end', () => console.log(observations))
