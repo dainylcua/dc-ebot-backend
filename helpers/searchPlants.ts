@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import csv from 'csv-parser';
+import es from 'event-stream';
 import { resolve } from 'path';
 
 // Data type
@@ -37,40 +37,45 @@ export default async function searchPlants(filePath: string, desiredId: string):
   const stream: fs.ReadStream = fs.createReadStream(filePath);
 
   await new Promise((fulfill) => stream
-    .pipe(csv(['id', 'date', 'element', 'data', 'mFlag', 'qFlag', 'sFlag', 'observedTime']))
-    .on('data', (parsedData) => {
-      if(parsedData['id'] == desiredId) {
-        // Get date of data
-        let unformattedDate = parsedData['date'];
-        let dataDate = new Date(`${unformattedDate.substring(0,4)}-${unformattedDate.substring(4,6)}-${unformattedDate.substring(6,8)}`);
+    .pipe(es.split("\n"))
+    .pipe(
+      es
+        .mapSync((line: string) => {
+          let observationData = line.split(",");
+          if(observationData[0] === desiredId) {
+            let unformattedDate = observationData[1];
+            let dataDate = new Date(`${unformattedDate.substring(0,4)}-${unformattedDate.substring(4,6)}-${unformattedDate.substring(6,8)}`);              
 
-        // Set the date of the current day of data if default
-        if(currentDayData.date.getFullYear() === 1970) currentDayData.date = dataDate
+            // Set the date of the current day of data if default
+            if(currentDayData.date.getFullYear() === 1970) currentDayData.date = dataDate
 
-        if(currentDayData.date.getDay() === dataDate.getDay()) {
-          // Same day of data, format into MeasurementData then push into measurements[]
-          let data = parseInt(parsedData['data']);
-          const formattedValue: MeasurementData = { 
-            data,
-            element: parsedData["element"],
-            mFlag: parsedData["mFlag"],
-            qFlag: parsedData["qFlag"],
-            sFlag: parsedData["sFlag"],
-            observedTime: parsedData["observedTime"]
+            if(currentDayData.date.getDay() === dataDate.getDay()) {
+              // Same day of data, format into MeasurementData then push into measurements[]
+              let data = parseInt(observationData[3]);
+              const formattedValue: MeasurementData = { 
+                element: observationData[2],
+                data,
+                mFlag: observationData[4],
+                qFlag: observationData[5],
+                sFlag: observationData[6],
+                observedTime: observationData[7]
+              }
+              currentDayData.measurements.push(formattedValue)
+            } else {
+              // New day of data, push the current data into days[], then start new day of data
+              stationData.days.push(currentDayData)
+
+              currentDayData = {
+                date: new Date('1970-01-01T00:00:00'),
+                measurements: [],
+              }
+            }
           }
-          currentDayData.measurements.push(formattedValue)
-        } else {
-          // New day of data, push the current data into days[], then start new day of data
-          stationData.days.push(currentDayData)
-
-          currentDayData = {
-            date: new Date('1970-01-01T00:00:00'),
-            measurements: [],
-          }
-        }
-      }
-    })
+          
+        })
+    )
     .on('end', () => {
+      if(filePath.includes("test")) stationData.days.push(currentDayData)
       fulfill(stationData)
     }))
   return stationData

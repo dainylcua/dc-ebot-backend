@@ -27,6 +27,7 @@ app.get('/stations/:id', async (req: Request, res: Response) => {
   let results = await searchPlants(regularPath, req.params.id)
   res.send(results)
 })
+
 app.get('/test/stations', (req: Request, res: Response) => {
   res.send("Test Stations page")
 })
