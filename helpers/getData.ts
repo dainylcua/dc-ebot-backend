@@ -34,6 +34,7 @@ type StationCollection = {
 
 export default function getData(filePath: string): StationCollection {
   let stations: StationCollection = {};
+  let uniqueStationIds: string[] = [];
 
   const stream: fs.ReadStream = fs.createReadStream(filePath);
 
@@ -63,19 +64,18 @@ export default function getData(filePath: string): StationCollection {
           // If there has not been an observation for the date, add the date
         } else {
           stations[id][date] = {
-            element: observation
+            [element]: observation
           };
         }
       } else {
         // If not, create the id
         stations[id] = {
-          date: {
-            element: observation
+          [date]: {
+            [element]: observation
           }
         };
       }
-    },
-    complete: () => console.log('.csv file parsing completed')
+    }
   })
   return stations
 }

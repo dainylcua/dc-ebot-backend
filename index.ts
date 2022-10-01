@@ -13,30 +13,45 @@ const port = process.env.PORT;
 
 // Other constants
 const stationPath: string = path.join(__dirname, './files', '2017.csv');
-const countriesPath: string = path.join(__dirname, './files', 'ghcnd-countries.txt')
+const countriesPath: string = path.join(__dirname, './files', 'ghcnd-countries.txt');
 
 // Load data
-const regularStations = getData(stationPath)
-const countries = getCountries(countriesPath)
+const stations = getData(stationPath);
+const countries = getCountries(countriesPath);
 
 // Routes
 app.get('/', (req: Request, res: Response) => {
-  res.send("Routes are :\n/stations\n/stations/:id\n/stations/:id/:month\n")
+  res.send("Routes are:\n/stations\n/stations/:id\n/stations/:id/:month\n")
 })
 
 app.get('/stations', (req: Request, res: Response) => {
-  let results = [...new Set(Object.keys(regularStations))];
-  res.send(results);
+  const uniqueStationIds = [...new Set(Object.keys(stations))]
+  res.send({
+    stations: uniqueStationIds
+  });
 })
 
 app.get('/stations/:id', (req: Request, res: Response) => {
-  let results = regularStations[req.params.id];
-  res.send(results);
+  let yearStationData = stations[req.params.id];
+  res.send({
+    id: req.params.id,
+    days: yearStationData
+  });
 })
 
 app.get('/stations/region/:country', (req: Request, res: Response) => {
-  let results = countries;
-  res.send(results);
+  const uniqueStationIds = [...new Set(Object.keys(stations))]
+  let countryObject = countries;
+  if(!countryObject[req.params.country]) {
+    res.send(`Error: unexpected country code`)
+  } else {
+    let countryStations = uniqueStationIds.filter((stationId) => {
+      if(stationId.slice(0,2) === req.params.country) return stationId
+    }) 
+    res.send({
+      stations: countryStations
+    });
+  }
 })
 
 app.listen(port, () => console.log(`Now running on port ${port}.`))
