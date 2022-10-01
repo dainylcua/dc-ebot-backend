@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import getData from './helpers/getData'
 import getCountries from './helpers/getCountries'
+import { DayData } from './types/main'
 
 dotenv.config();
 

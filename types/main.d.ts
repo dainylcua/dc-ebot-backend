@@ -1,4 +1,4 @@
-type Properties = {
+export type Properties = {
   data: number;
   mFlag: string;
   qFlag: string;
@@ -6,14 +6,14 @@ type Properties = {
   observedTime: string;
 }
 
-type Observation = {
+export type Observation = {
   [element: string]: Properties
 }
 
-type DayData = {
+export type DayData = {
   [date: string]: Observation;
 }
 
-type StationCollection = {
+export type StationCollection = {
   [id: string]: DayData
 }

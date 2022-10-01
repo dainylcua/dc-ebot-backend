@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import Papa, { ParseStepResult } from 'papaparse';
+import { StationCollection, Properties } from '../types/main';
 
 
 /**
