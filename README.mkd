@@ -1,3 +1,118 @@
 # dc-ebot-backend
 
-Please put *2017.csv* into the *files* directory before running.
+This backend application was created for a coding interview. 2017 weather station data from NOAA was used as the input stream when developing this file.
+
+----
+
+## Please put *2017.csv* into the *files* directory before running this program
+
+If you do not have this file, you can get it at [NCDC's archive of global historical weather](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2017.csv.gz).
+
+----
+
+## How to run (cloning)
+
+Before starting up the frontend application, you should clone this repository then boot up the server by typing:
+
+```js
+npm run dev
+```
+
+The server will then run on port 3001 or whatever PORT is set to in your .env file.
+
+## How to run (docker)
+
+## API Endpoints
+
+### "/"
+
+Returns a list of available routes for the API.
+
+### "/stations"
+
+Returns an object with the property "stations" that contains all unique station IDs.
+
+```js
+{
+  stations: [
+    "AE000041196",
+    "AEM00041194",
+    "AEM00041217",
+    "AEM00041218",
+    "AFM00040938",
+    ...
+  ]
+}
+```
+
+### "/stations/:id"
+
+Returns an object with the station's id in the "id" property and all elements that occured per day in the "days" property for the year of 2017 (if 2017.csv is used).
+
+```js
+example: `http://localhost:3001/stations/AGE00147708`
+
+{
+  "id": "AGE00147708",
+  "days": {
+    "20171201": {
+      "TMIN": {
+        "data": 83,
+        "mFlag": "",
+        "qFlag": "",
+        "sFlag": "S",
+        "observedTime": ""
+      },
+      "PRCP": { ... },
+      ...
+    },
+    "20171202": { ... },
+    ...
+  }
+}
+```
+
+### "/stations/:id/:month"
+
+Returns an object with the station's id in the "id" property and all elements that occured per day in the "days" property of a given month for the year of 2017 (if 2017.csv is used).
+
+```js
+example: `http://localhost:3001/stations/AGE00147708/4`
+
+{
+  "id": "AGE00147708",
+  "days": {
+      "20170401": {
+          "TMIN": {
+              "data": 90,
+              "mFlag": "",
+              "qFlag": "",
+              "sFlag": "S",
+              "observedTime": ""
+          },
+          "PRCP": { ... },
+      "20170402": { ... },
+      ...
+      
+      "20170430": { ... }
+      }
+  }
+}
+```
+
+### "/stations/country/:country"
+
+Returns an object with the property "stations" that contains all unique station IDs for a given country.
+
+```js
+example: `http://localhost:3001/stations/country/US`
+
+{
+    "stations": [
+        "US10adam004",
+        "US10adam032",
+        "US10adam051",
+        ...
+    ]
+}
+```

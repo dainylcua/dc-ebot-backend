@@ -9,7 +9,7 @@ dotenv.config();
 
 // Initialize app
 const app: Express = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
 
 // Other constants
 const stationPath: string = path.join(__dirname, './files', '2017.csv');
@@ -21,7 +21,7 @@ const countries = getCountries(countriesPath);
 
 // Routes
 app.get('/', (req: Request, res: Response) => {
-  res.send("Routes are:\n/stations\n/stations/:id\n/stations/:id/:month\n")
+  res.send('Routes are:\n/stations\n/stations/:id\n/stations/country/:country\n/stations/:id/:month\n')
 })
 
 app.get('/stations', (req: Request, res: Response) => {
