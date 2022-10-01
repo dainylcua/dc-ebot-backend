@@ -1,4 +1,4 @@
-// Import dependencies
+// Import dependencies, enable .env (if used)
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import * as path from 'path';
@@ -11,20 +11,20 @@ const app: Express = express();
 const port = process.env.PORT;
 
 // Other constants
-const regularPath: string = path.join(__dirname, './files', '2017.csv'); /* real data file */
-// const testPath: string = path.join(__dirname, './files', '20170101_test.csv'); /* test file */
+const regularPath: string = path.join(__dirname, './files', '2017.csv');
 
 // Load from .csv
 const regularStations = getData(regularPath)
-// const testStations = getData(testPath)
+
 
 // Routes
 app.get('/', (req: Request, res: Response) => {
-  res.send("Index page")
+  res.send("Routes are :\n/stations\n/stations/:id\n/stations/:id/:month\n")
 })
 
 app.get('/stations', (req: Request, res: Response) => {
-  res.send("Stations page")
+  let results = [...new Set(Object.keys(regularStations))]
+  res.send(results)
 })
 
 app.get('/stations/:id', (req: Request, res: Response) => {
@@ -32,26 +32,8 @@ app.get('/stations/:id', (req: Request, res: Response) => {
   res.send(results)
 })
 
-// app.get('/stations/:id/:month', async (req: Request, res: Response) => {
-
-//   res.send(results)
-// })
-
-// app.get('/test/stations', (req: Request, res: Response) => {
-//   res.send("Test Stations page")
-// })
-
-// app.get('/test/stations/:id', async (req: Request, res: Response) => {
-
-//   res.send(results)
-// })
-
-// app.get('/test/stations/:id/:month', async (req: Request, res: Response) => {
-
-//   res.send(results)
-// })
-
-
-
+app.get('/stations/region/:country', (req: Request, res: Response) => {
+  let results 
+})
 
 app.listen(port, () => console.log(`Now running on port ${port}.`))

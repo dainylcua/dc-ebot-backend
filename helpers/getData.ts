@@ -1,7 +1,5 @@
 import * as fs from 'fs';
-import * as path from 'path';
-import { resolve } from 'path';
-import Papa, { ParseResult, ParseStepResult } from 'papaparse';
+import Papa, { ParseStepResult } from 'papaparse';
 
 // Data types
 type Properties = {
@@ -23,6 +21,16 @@ type DayData = {
 type StationCollection = {
   [id: string]: DayData
 }
+
+/**
+ * Pulls data from the .csv file located at the provided filePath and
+ * returns an object containing station data. 
+ * 
+ * @param filePath - Path to .csv file
+ * @returns An object containing stationData. 
+ * @remarks Built with daily/by_year NOAA weather observations as the 
+ * expected input.
+ */
 
 export default function getData(filePath: string): StationCollection {
   let stations: StationCollection = {};
@@ -67,7 +75,7 @@ export default function getData(filePath: string): StationCollection {
         }
       }
     },
-    complete: () => console.log(stations)
+    complete: () => console.log('.csv file parsing completed')
   })
   return stations
 }
