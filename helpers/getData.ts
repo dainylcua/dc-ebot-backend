@@ -1,26 +1,6 @@
 import * as fs from 'fs';
 import Papa, { ParseStepResult } from 'papaparse';
 
-// Data types
-type Properties = {
-  data: number;
-  mFlag: string;
-  qFlag: string;
-  sFlag: string;
-  observedTime: string;
-}
-
-type Observation = {
-  [element: string]: Properties
-}
-
-type DayData = {
-  [date: string]: Observation;
-}
-
-type StationCollection = {
-  [id: string]: DayData
-}
 
 /**
  * Pulls data from the .csv file located at the provided filePath and
