@@ -41,7 +41,7 @@ export default function getData(filePath: string): StationCollection {
     step: (row: ParseStepResult<string []>) => {
       const observationData = row.data;
 
-      const id = observationData[0]
+      const id = observationData[0];
       const date = observationData[1];
       const element = observationData[2];
       
@@ -58,13 +58,13 @@ export default function getData(filePath: string): StationCollection {
         // If there has already been an observation for the date
         if(stations[id][date]) {
           // Add the element to the date object
-          stations[id][date][element] = observation
+          stations[id][date][element] = observation;
 
           // If there has not been an observation for the date, add the date
         } else {
           stations[id][date] = {
             element: observation
-          }
+          };
         }
       } else {
         // If not, create the id
@@ -72,7 +72,7 @@ export default function getData(filePath: string): StationCollection {
           date: {
             element: observation
           }
-        }
+        };
       }
     },
     complete: () => console.log('.csv file parsing completed')

@@ -1,3 +1,5 @@
 /dist
 /bin
 /files/2017.csv
+node_modules
+.env
