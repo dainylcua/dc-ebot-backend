@@ -10,17 +10,37 @@ If you do not have this file, you can get it at [NCDC's archive of global histor
 
 ----
 
-## How to run (cloning)
+## How to run the application
 
-Before starting up the frontend application, you should clone this repository then boot up the server by typing:
+Regardless of how you wish to run the application, you will need to wait approximately a minute or two for the .csv file stream to be parsed for the data to load. Afterwards, you can start the frontend application.
 
-```js
+The backend server will then run on port 3001 or whatever PORT is set to in your .env file.
+
+### Cloning (preferred)
+
+Navigate to the directory you wish to store this repository in and run the following command in your command prompt:
+
+```bash
+git clone https://github.com/dainylcua/dc-ebot-backend.git
+npm run build
+```
+
+Afterwards, you MUST put the *2017.csv* file in /dist/files, then run the following command:
+
+```bash
 npm run dev
 ```
 
-The server will then run on port 3001 or whatever PORT is set to in your .env file.
+### Docker (UNSTABLE)
 
-## How to run (docker)
+Docker repository contains *2017.csv* file, however memory usage may be high when running the server due to large amount of data.
+
+Navigate to the directory you wish to store this repository in and run the following commands in your command prompt:
+
+```bash
+docker image pull dainylcua/dc-ebot-backend:1.1
+docker run -p 3001:3001 4f595d513ed5
+```
 
 ## API Endpoints
 

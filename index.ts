@@ -79,7 +79,7 @@ app.get('/stations/:id/:month', (req: Request, res: Response) => {
 
   if(daysInMonths.hasOwnProperty(month)) {
     const days = daysInMonths[month as keyof typeof daysInMonths]
-    for(let i=0; i<=days; i++) {
+    for(let i=1; i<=days; i++) {
       let day = i.toString().length === 1 ? '0' + i.toString() : i.toString();
       let date = `2017${month}${day}`;
       monthStationData[date] = yearStationData[date]

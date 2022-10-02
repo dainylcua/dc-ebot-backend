@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import Papa, { ParseStepResult } from 'papaparse';
-import { StationCollection, Properties } from '../types/main';
+import { StationCollection, Properties, Observation, DayData } from '../types/main';
 
 
 /**
@@ -15,7 +15,6 @@ import { StationCollection, Properties } from '../types/main';
 
 export default function getData(filePath: string): StationCollection {
   let stations: StationCollection = {};
-  let uniqueStationIds: string[] = [];
 
   const stream: fs.ReadStream = fs.createReadStream(filePath);
 
@@ -58,5 +57,6 @@ export default function getData(filePath: string): StationCollection {
       }
     }
   })
+
   return stations
 }
