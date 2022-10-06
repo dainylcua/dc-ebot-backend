@@ -148,3 +148,4 @@ example: `http://localhost:3001/stations/country/US`
 
 * ~~Long query times, as per initial email~~ (solved by making the .csv file parse into a global variable)
 * CRITICAL: There is a potential memory leak when running too many requests too quickly to the backend server. When cloning and running from Docker, this problem occurs more often.
+* Potential improvement: Use a FTP connection module to pull the data directly from NOAA's server without having to download the file and place it separately
