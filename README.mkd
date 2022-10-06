@@ -6,7 +6,7 @@ This backend application was created for a coding interview. 2017 weather statio
 
 ## Please put *2017.csv* into the *files* directory before running this program
 
-If you do not have this file, you can get it at [NCDC's archive of global historical weather](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2017.csv.gz).
+If you do not have this file, you can get it at NCDC's archive of global historical weather: (ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2017.csv.gz).
 
 ----
 
