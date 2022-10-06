@@ -22,10 +22,17 @@ Navigate to the directory you wish to store this repository in and run the follo
 
 ```bash
 git clone https://github.com/dainylcua/dc-ebot-backend.git
+cd dc-ebot-backend
 npm run build
 ```
 
-Afterwards, you MUST put the *2017.csv* file in /dist/files, then run the following command:
+Then, move the files from /files into /dist/files by running the following commands:
+
+```bash
+mv -v ./files ./dist
+```
+
+Afterwards, you MUST put the *2017.csv* file from NOAA's website in /dist/files, then run the following command:
 
 ```bash
 npm run dev
