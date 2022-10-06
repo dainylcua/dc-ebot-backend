@@ -2,15 +2,20 @@
 import express, { Express, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import getData from './helpers/getData'
-import getCountries from './helpers/getCountries'
-import { DayData } from './types/main'
+import getData from './helpers/getData';
+import getCountries from './helpers/getCountries';
+import { DayData } from './types/main';
+import cors from 'cors';
 
 dotenv.config();
 
-// Initialize app
+// Initialize app and middleware
 const app: Express = express();
 const port = process.env.PORT || 3001;
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 
 // Other constants
 const stationPath: string = path.join(__dirname, './files', '2017.csv');

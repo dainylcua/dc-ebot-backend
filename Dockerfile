@@ -14,6 +14,8 @@ RUN mkdir -p /dist/files
 
 COPY ./files /dist/files
 
+RUN rm -rf ./files
+
 ENV PORT=3001
 
 EXPOSE 3001
