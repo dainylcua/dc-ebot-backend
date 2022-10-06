@@ -10,7 +10,7 @@ If you do not have this file, you can get it at [NCDC's archive of global histor
 
 ----
 
-## How to run the application
+## Getting Started
 
 Regardless of how you wish to run the application, you will need to wait approximately a minute or two for the .csv file stream to be parsed for the data to load. Afterwards, you can start the frontend application.
 
@@ -38,8 +38,8 @@ Docker repository contains *2017.csv* file, however memory usage may be high whe
 Navigate to the directory you wish to store this repository in and run the following commands in your command prompt:
 
 ```bash
-docker image pull dainylcua/dc-ebot-backend:1.1
-docker run -p 3001:3001 4f595d513ed5
+docker image pull dainylcua/dc-ebot-backend:1.3
+docker run -p 3001:3001 51eb36ae0ab3
 ```
 
 ## API Endpoints
@@ -136,3 +136,8 @@ example: `http://localhost:3001/stations/country/US`
     ]
 }
 ```
+
+## Challenges faced during development
+
+* ~~Long query times, as per initial email~~ (solved by making the .csv file parse into a global variable)
+* CRITICAL: There is a potential memory leak when running too many requests too quickly to the backend server. When cloning and running from Docker, this problem occurs more often.
